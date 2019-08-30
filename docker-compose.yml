@@ -10,7 +10,11 @@ services:
       - ENV=LOCAL
       - SECRET_KEY=${SECRET_KEY}
     build: .
-    command: /code/run.sh
+    command: >
+      bash -c "python /code/crt_portal/manage.py migrate &&
+      python /code/crt_portal/manage.py collectstatic --noinput &&
+      python /code/crt_portal/manage.py compress &&
+      python /code/crt_portal/manage.py runserver 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:
